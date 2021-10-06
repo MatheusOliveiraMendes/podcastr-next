@@ -2,12 +2,14 @@ import { format, parseISO } from "date-fns";
 import { GetStaticPaths, GetStaticProps } from "next";
 import ptBR from 'date-fns/locale/pt-BR';
 import Image from "next/image";
+import Head from "next/head";
 import Link from 'next/link';
 
 import { api } from '../../services/api';
 import { convertDurationToString } from "../../utils/convertDurationToString";
 
 import styles from './episode.module.scss';
+import { usePlayer } from "../../contexts/PlayerContext";
 
 type Episode = {
     id: string;
@@ -27,19 +29,26 @@ type EpisodeProps = {
 
 export default function Episode({ episode }: EpisodeProps) {
 
+    const { play } = usePlayer();
+
     return (
         <div className={styles.episode}>
+
+            <Head>
+                <title>{episode.title} | Podcastr</title>
+            </Head>
+
             <div className={styles.thumbnailContainer}>
-            <Link href="/" passHref>
-                <button type="button">
-                    <Image src="/arrow-left.svg" alt="Voltar" width={50} height={50} />
-                </button>
+                <Link href="/" passHref>
+                    <button type="button">
+                        <Image src="/arrow-left.svg" alt="Voltar" width={30} height={30} />
+                    </button>
                 </Link>
 
                 <Image src={episode.thumbnail} alt={episode.title} width={700} height={160} objectFit="cover" />
 
-                <button type="button">
-                    <Image src="/play.svg" alt="Tocar episodio" width={50} height={50}  />
+                <button type="button" onClick={() => play(episode)}>
+                    <Image src="/play.svg" alt="Tocar episodio" width={50} height={50} />
                 </button>
             </div>
 
@@ -51,10 +60,10 @@ export default function Episode({ episode }: EpisodeProps) {
             </header>
 
             <div className={styles.description}
-            dangerouslySetInnerHTML={{ __html: episode.description }}
+                dangerouslySetInnerHTML={{ __html: episode.description }}
             />
-                
-           
+
+
 
         </div>
     )
