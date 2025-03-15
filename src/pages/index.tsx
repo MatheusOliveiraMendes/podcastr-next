@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
-import ptBR from 'date-fns/locale/pt-BR';
+import { ptBR } from 'date-fns/locale/pt-BR';
 import { api } from '../services/api';
 import Image from "next/image";
 import Head from "next/head";
